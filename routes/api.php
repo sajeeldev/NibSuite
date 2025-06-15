@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\GoogleController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -19,3 +20,8 @@ Route::middleware('auth:sanctum')->group(function () {
         return response()->json(['message' => 'Logged out successfully']);
     });
 });
+
+
+
+Route::get('auth/google', [GoogleController::class, 'redirectToGoogle']);
+Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
