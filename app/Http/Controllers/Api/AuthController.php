@@ -67,11 +67,25 @@ class AuthController extends Controller
                 'message' => 'Invalid credentials',
             ], 401);
         }
-        $user  = Auth::user();
-        $token = $user->createToken('auth_token')->plainTextToken;
+        $token = $request->user()->createToken('auth_token')->plainTextToken;
         return response()->json([
             'message' => 'Login successful',
             'token'   => $token,
+        ]);
+    }
+
+    /**
+     * Handle the incoming request for logout.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function logout(Request $request)
+    {
+        // Revoke the user's token
+        $request->user()->currentAccessToken()->delete();
+        return response()->json([
+            'message' => 'Logged out successfully',
         ]);
     }
 }
